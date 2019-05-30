@@ -1,117 +1,149 @@
-Assignment 3: (April 23, 2019)
-Laravel:
+<!DOCTYPE html>
+<html>
+<body>
+
+  <div class="cover">
+    <img src="https://www.csusbathletics.com/images/2013/12/12/CSUSB_logo_main57.jpg?width=1416&height=761&mode=crop" />
+  </div>
+  <div class="navigation">
+    <a href="{{ URL::route('welcome') }}">Welcome</a>
+    <a href="{{ URL::route('research') }}">Research</a>
+    <a href="{{ URL::route('contact') }}">Contact</a>
+  </div>
+
+<p>
+<h2>Assignment 3: (April 23, 2019)</h2>
+<p>Laravel:
 Laravel is web application framework, using tasks such as authentication, routing, sessions, and caching.  Laravel is used as a more simple framework compared to others out there.  Laravel is accessible, yet powerful, providing tools needed for large, robust applications; control container, expressive migration system, tightly integrated unit testing support.
+</p>
 
-Installation:
-	- Composer
-		- composer is needed to manage its dependencies
-		- composer.phar or use windows installer
+<h3> Goals (future)</h3>
+	<p> Build a functional Laravel worksite with authentication, routes, etc.</p>
 
-		- composer global require "laravel/installer=~1.1"
-		- type command - laravel new "filename"
+<h4> Why Laravel? </h4>
+	<p> Authorization Technique:
+		<br> - simplicity when it comes to authorization
+		<br> - provides simple ways to organize authorization logic and control acces to various resources.
+	<br> Object-Oriented Libraries:
+		<br> - comes with pre-installed object-oriented libraries, such as Authentication, active useres, Bcrypt hasing, password reset, and encryption.
+	<br>Artisan:
+		<br> - allows developers to perform the majority of those repetitive programming tasks 
+	<br>Security
+	<br>Database Migration:
+		<br> - easily migrate the changes into any other development machine
+	<br>Automatic Package Discovery
 
-Server Requirements:
+<h4>Installation:</h4>
+
+	Composer
+		<br>- composer is needed to manage its dependencies
+		<br>- composer.phar or use windows installer
+
+		<br>- composer global require "laravel/installer=~1.1"
+		<br>- type command - laravel new "filename"
+
+<h4>Server Requirements:</h4>
 	- PHP >= 5.4
-	- MCrypt PHP Extension
+	<br>- MCrypt PHP Extension
 
-Configuration:
+<h4>Configuration:</h4>
 	- set a key
-	- app/config/app.php to find config folder
+	<br>- app/config/app.php to find config folder
 
-Assignment 4: (April 30, 2019)
-Routing:
+<h2>Assignment 4: (April 30, 2019)</h2>
+<h4>Routing:</h4>
 	- requests = routes
-	- routing routes to the associated controller
+	<br>- routing routes to the associated controller
 
-Basic Routing
+<h4>Basic Routing</h4>
 	- registered within app/routes.php
-
-Basic GET Route:
-Route::get('/', function()
+<br>
+<h5>Basic GET Route:</h5>
+<pre><code>Route::get('/', function()
 {
     return 'Hello World';
 });
-
-Basic POST Route:
-Route::post('foo/bar', function()
+</code></pre>
+<h5>Basic POST Route:</h5>
+<pre><code>Route::post('foo/bar', function()
 {
     return 'Hello World';
 });
-
-Registering A Route For Multiple Verbs:
-Route::match(array('GET', 'POST'), '/', function()
+</code></pre>
+<h5>Registering A Route For Multiple Verbs:</h5>
+<pre><code>Route::match(array('GET', 'POST'), '/', function()
 {
     return 'Hello World';
 });
-
-Registering A Route Responding To Any HTTP Verb:
-Route::any('foo', function()
+</code></pre>
+<h5>Registering A Route Responding To Any HTTP Verb:</h5>
+<pre><code>Route::any('foo', function()
 {
     return 'Hello World';
 });
-
-URL to Route
-$url = URL::to('foo');
-
-Route Parameters:
-Route::get('user/{id}', function($id)
+</code></pre>
+<h5>URL to Route</h5>
+<pre><code>$url = URL::to('foo');
+</code></pre>
+<h5>Route Parameters:</h5>
+<pre><code>Route::get('user/{id}', function($id)
 {
     return 'User '.$id;
 });
+<pre><code>
+<h5>Route Filters:</h5>
+	<br>- limit access to a given route
+	<br>- good for areas of the site that need authentication
+	<br>- filters: auth, auth.basic, guest, csrf
+	<br>- located app/filters.php file
 
-Route Filters:
-	- limit access to a given route
-	- good for areas of the site that need authentication
-	- filters: auth, auth.basic, guest, csrf
-	- located app/filters.php file
-
-Defining a Route Filter:
-Route::filter('old', function()
+<h5>Defining a Route Filter:</h5>
+<pre><code>Route::filter('old', function()
 {
     if (Input::get('age') < 200)
     {
         return Redirect::to('home');
     }
 });
-
-Attaching A Filter To A Route:
-Route::get('user', array('before' => 'old', function()
+</code></pre>
+<h5>Attaching A Filter To A Route:</h5>
+<pre><code>Route::get('user', array('before' => 'old', function()
 {
     return 'You are over 200 years old!';
 }));
-
-Attaching A Filter To A Controller Action:
-Route::get('user', array('before' => 'old', 'uses' => 'UserController@showProfile'));
-
-Attaching Multiple Filters To A Route:
-Route::get('user', array('before' => 'auth|old', function()
+</code></pre>
+<h5>Attaching A Filter To A Controller Action:</h5>
+<pre><code>Route::get('user', array('before' => 'old', 'uses' => 'UserController@showProfile'));
+</code></pre>
+<h5>Attaching Multiple Filters To A Route:</h5>
+<pre><code>Route::get('user', array('before' => 'auth|old', function()
 {
     return 'You are authenticated and over 200 years old!';
 }));
-
-Pattern Based Filters:
-	- applies to an entire set of routes based on their URI
-Route::filter('admin', function()
+</code></pre>
+<h5>Pattern Based Filters:</h5>
+	<br>- applies to an entire set of routes based on their URI
+<pre><code>Route::filter('admin', function()
 {
     //
 });
 
 Route::when('admin/*', 'admin');
-
-Filter Classes:
-Registering A Class Based Filter
-Route::filter('foo', 'FooFilter');
-
-Named Routes:
-	- make regerring to routes when generating redirects
-Route::get('user/profile', array('as' => 'profile', function()
+</code></pre>
+<h5>Filter Classes:</h5>
+<h5>Registering A Class Based Filter</h5>
+<pre><code>Route::filter('foo', 'FooFilter');
+</code></pre>
+<h5>Named Routes:</h5>
+	<br>- make regerring to routes when generating redirects
+<pre><code>Route::get('user/profile', array('as' => 'profile', function()
 {
     //
 }));
-
-Route Groups:
-	- apply filters to a group of routes
-Route::group(array('before' => 'auth'), function()
+</code></pre>
+<h5>Route Groups:</h5>
+	<br>- apply filters to a group of routes
+<pre><code>Route::group(array('before' => 'auth'), function()
 {
     Route::get('/', function()
     {
@@ -123,78 +155,79 @@ Route::group(array('before' => 'auth'), function()
         // Has Auth Filter
     });
 });
+</code></pre>
+<h5>404 ERRORS:</h5>
+<pre><code>	- App::abort(404);
+</code></pre>
 
-404 ERRORS:
-	- App::abort(404);
-
-Assignment 5: (May 7, 2019)
+<h2>Assignment 5: (May 7, 2019)</h2>
+<pre><code>
 Requests & Input:
 
-Basic Input:
+<h5>Basic Input:</h5>
 	- user input
-
-Retrieving An Input Value
+<h5>Retrieving An Input Value</h5>
 $name = Input::get('name');
 
-Retrieving A Default Value If The Input Value Is Absent
+<h5>Retrieving A Default Value If The Input Value Is Absent</h5>
 $name = Input::get('name', 'John');
 
-Determining If An Input Value Is Present
+<h5>Determining If An Input Value Is Present</h5>
 if (Input::has('name'))
 {
     //
 }
 
-Getting All Input For The Request
+<h5>Getting All Input For The Request</h5>
 $input = Input::all();
 
-Getting Only Some Of The Request Input
+<h5>Getting Only Some Of The Request Input</h5>
 $input = ::only('username', 'password');
 
 $input = Input::except('credit_card');
 
-Cookies:
+<h5>Cookies:</h5>
  - All cookies created by the Laravel framework are encrypted and signed with an authentication code, meaning they will be considered invalid if they have been changed by the client.
 
-Retrieving A Cookie Value:
+<h5>Retrieving A Cookie Value:</h5>
 $value = Cookie::get('name');
 
-Attaching A New Cookie To A Response:
+<h5>Attaching A New Cookie To A Response:</h5>
 $response = Response::make('Hello World');
 
 $response->withCookie(Cookie::make('name', 'value', $minutes));
 
-Creating A Cookie That Lasts Forever:
+<h5>Creating A Cookie That Lasts Forever:</h5>
 $cookie = Cookie::forever('name', 'value');
 
-Old Input:
+<h5>Old Input:</h5>
 	- You may need to keep input from one request until the next request. For example, you may need to re-populate a form after checking it for validation errors.
 
-Flashing Input To The Session:
+<h5>Flashing Input To The Session:</h5>
 Input::flash();
 
-Flashing Only Some Input To The Session:
+<h5>Flashing Only Some Input To The Session:</h5>
 Input::flashOnly('username', 'email');
 
 Input::flashExcept('password');
 
-redirect with previous page:
+<h5>redirect with previous page:</h5>
 return Redirect::to('form')->withInput();
 
 return Redirect::to('form')->withInput(Input::except('password'));
 
-Retrieving Old Data:
+<h5>Retrieving Old Data:</h5>
 Input::old('username');
 
-Files:
+<h5>Files:</h5>
 Retrieving An Uploaded File:
 $file = Input::file('photo');
 
-Request Information:
+<h5>Request Information:</h5>
 Retrieving The Request URI:
 $uri = Request::path();
 
-Retrieving The Request Method:
+<h5>Retrieving The Request Method:</h5>
 $method = Request::method();
 
 if (Request::isMethod('post'))
@@ -202,112 +235,112 @@ if (Request::isMethod('post'))
     //
 }
 
-Determining If The Request Path Matches A Pattern:
+<h5>Determining If The Request Path Matches A Pattern:</h5>
 if (Request::is('admin/*'))
 {
     //
 }
 
-Get The Request URL:
+<h5>Get The Request URL:</h5>
 $url = Request::url();
 
-Assignment 6: (May 14, 2019)
-Views & Responses
-Basic Responses:
+<h2>Assignment 6: (May 14, 2019)</h2>
+<h5>Views & Responses</h5>
+<h5>Basic Responses:</h5>
 Route::get('/', function()
 {
     return 'Hello World';
 });
 
-Creating Custom Responses:
+<h5>Creating Custom Responses:</h5>
 $response = Response::make($contents, $statusCode);
 
 $response->header('Content-Type', $value);
 
 return $response;
 
-Redirects:
+<h5>Redirects:</h5>
 return Redirect::to('user/login');
 
-Returning A Redirect With Flash Data:
+<h5>Returning A Redirect With Flash Data:</h5>
 return Redirect::to('user/login')->with('message', 'Login Failed');
 
-Returning A Redirect To A Named Route:
+<h5>Returning A Redirect To A Named Route:</h5>
 return Redirect::route('login');
 
-Returning A Redirect To A Named Route With Parameters:
+<h5>Returning A Redirect To A Named Route With Parameters:</h5>
 return Redirect::route('profile', array(1));
 
-Returning A Redirect To A Named Route Using Named Parameters:
+<h5>Returning A Redirect To A Named Route Using Named Parameters:</h5>
 return Redirect::route('profile', array('user' => 1));
 
-Returning A Redirect To A Controller Action:
+<h5>Returning A Redirect To A Controller Action:</h5>
 return Redirect::action('HomeController@index');
 
-Returning A Redirect To A Controller Action With Parameters:
+<h5>Returning A Redirect To A Controller Action With Parameters:</h5>
 return Redirect::action('UserController@profile', array(1));
 
-Returning A Redirect To A Controller Action Using Named Parameters
+<h5>Returning A Redirect To A Controller Action Using Named Parameters</h5>
 return Redirect::action('UserController@profile', array('user' => 1));
 
-Views:
+<h5>Views:</h5>
 	- Views typically contain the HTML of your application and provide a convenient way of separating your controller and domain logic from your presentation logic
 	- stored in app/views
 
 <!-- View stored in app/views/greeting.php -->
 
-<html>
-    <body>
-        <h1>Hello, <?php echo $name; ?></h1>
-    </body>
-</html>
+html>
+    body>
+        h1>Hello, <?php  $name; ?>/h1>
+    /body>
+/html>
 
 Route::get('/', function()
 {
     return View::make('greeting', array('name' => 'Taylor'));
 });
 
-Passing Data To Views:
+<h5>Passing Data To Views:</h5>
 // Using conventional approach
 $view = View::make('greeting')->with('name', 'Steve');
 
-Passing A Sub-View To A View:
+<h5>Passing A Sub-View To A View:</h5>
 $view = View::make('greeting')->nest('child', 'child.view');
 
 $view = View::make('greeting')->nest('child', 'child.view', $data);
 
-<html>
-    <body>
-        <h1>Hello!</h1>
-        <?php echo $child; ?>
-    </body>
-</html>
+html>
+    body>
+        h1>Hello!/h1>
+        ?php echo $child; ?>
+    /body>
+/html>
 
-Determining If A View Exists:
+<h5>Determining If A View Exists:</h5>
 if (View::exists('emails.customer'))
 {
     //
 }
 
-View Composers:
+<h5>View Composers:</h5>
 	- View composers are callbacks or class methods that are called when a view is rendered
 	- If you have data that you want bound to a given view each time that view is rendered throughout your application, a view composer can organize that code into a single location
 	- function as view models or presenters
 
-Defining A View Composer
+<h5>Defining A View Composer</h5>
 View::composer('profile', function($view)
 {
     $view->with('count', User::count());
 });
 
-Defining Multiple Composers
+<h5>Defining Multiple Composers</h5>
 View::composers(array(
     'AdminComposer' => array('admin.index', 'admin.profile'),
     'UserComposer' => 'user',
     'ProductComposer@create' => 'product'
 ));
 
-View Creators:
+<h5>View Creators:</h5>
 	- similar to composers, except they are fired immediately when the view is instantiated
 	- use creator method
 
@@ -316,18 +349,18 @@ View::creator('profile', function($view)
     $view->with('count', User::count());
 });
 
-Special Responses:
-Creating A JSON Response:
+<h5>Special Responses:</h5>
+<h5>Creating A JSON Response:</h5>
 return Response::json(array('name' => 'Steve', 'state' => 'CA'));
 
-Creating A File Download Response:
+<h5>Creating A File Download Response:</h5>
 return Response::download($pathToFile);
 
 return Response::download($pathToFile, $name, $headers);
 
-Assignment 7: (May 21, 2019)
-Controllers
-Basic Controllers:
+<h2>Assignment 7: (May 21, 2019)</h2>
+<h5>Controllers</h5>
+<h5>Basic Controllers:</h5>
 	- group related route logic into a class, as well as take advange of more advanced framework features
 	- stored app/controllers
 
@@ -345,17 +378,17 @@ class UserController extends BaseController {
 
 }
 
-Controller Filters:
+<h5>Controller Filters:</h5>
 	- Filters may be specified on controller routes similar to regular routes
 
 Route::get('profile', array('before' => 'auth',
             'uses' => 'UserController@showProfile'));
 
-Implicit Controllers:
+<h5>Implicit Controllers:</h5>
 	- allows you to easily define a single route to handle every action in a controller
 Route::controller('users', 'UserController');
 
-RESTful Resource Controllers:
+<h5>RESTful Resource Controllers:</h5>
 	- Resource controllers make it easier to build RESTful controllers around resources
 
 Actions Handled By Resource Controller
@@ -368,12 +401,15 @@ GET			/resource/{resource}/edit	edit	resource.edit
 PUT/PATCH	/resource/{resource}		update	resource.update
 DELETE		/resource/{resource}		destroy	resource.destroy
 
-Handling Missing Methods:
+<h5>Handling Missing Methods:</h5>
 	- a catch-all method may be defined which will be called when no other matching method is found on a given controller
 	- _call
 
-Defining A Catch-All Method
+<h5>Defining A Catch-All Method</h5>
 public function missingMethod($parameters = array())
 {
     //
 }
+</p>
+</body>
+</html>
